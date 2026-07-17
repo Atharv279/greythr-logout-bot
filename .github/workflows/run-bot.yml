@@ -1,0 +1,37 @@
+name: Greythr Auto Check-out
+
+on:
+  schedule:
+    # 6:30 PM IST is 13:00 UTC. 
+    # We schedule it to run shortly after 6:30 PM IST:
+    - cron: '35 13 * * 1-5'  # ~07:05 PM IST (Primary/Backup 1)
+    - cron: '45 13 * * 1-5'  # ~07:15 PM IST (Backup 2)
+  workflow_dispatch: # Allows manual run for testing
+
+jobs:
+  check-out:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install playwright asyncio
+        playwright install chromium
+        playwright install-deps chromium
+
+    - name: Run bot
+      env:
+        GREYTHR_USERNAME: ${{ secrets.GREYTHR_USERNAME }}
+        GREYTHR_PASSWORD: ${{ secrets.GREYTHR_PASSWORD }}
+        GREYTHR_URL: "https://nio-stars.greythr.com/"
+        RANDOM_DELAY: "true"
+      run: python bot.py
