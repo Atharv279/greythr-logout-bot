@@ -4,8 +4,8 @@ on:
   schedule:
     # 6:30 PM IST is 13:00 UTC. 
     # We schedule it to run shortly after 6:30 PM IST:
-    - cron: '35 13 * * 1-5'  # ~07:05 PM IST (Primary/Backup 1)
-    - cron: '45 13 * * 1-5'  # ~07:15 PM IST (Backup 2)
+    - cron: '35 13 * * 1-6'  # ~07:05 PM IST (Primary/Backup 1)
+    - cron: '45 13 * * 1-6'  # ~07:15 PM IST (Backup 2)
   workflow_dispatch: # Allows manual run for testing
 
 jobs:
